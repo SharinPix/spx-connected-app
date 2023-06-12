@@ -1,9 +1,8 @@
 import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages, AuthInfo, Connection } from '@salesforce/core';
-import {} from 'jsforce';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('spx-connected-app', 'list');
+const messages = Messages.loadMessages('spx-connected-app', 'connected.list');
 
 export type ConnectedAppResult = { fullName: string };
 
