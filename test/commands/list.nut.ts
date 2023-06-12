@@ -13,7 +13,7 @@ describe('list NUTs', () => {
 
   it('should display provided name', () => {
     const name = 'World';
-    const command = `list --name ${name}`;
+    const command = `list --name ${name} --username kevan@dev.co`;
     execCmd(command, { ensureExitCode: 0 });
   });
 });
