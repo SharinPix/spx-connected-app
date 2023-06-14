@@ -1,5 +1,5 @@
 import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
-import { Messages, AuthInfo, Connection } from '@salesforce/core';
+import { Messages, AuthInfo, Connection, Org } from '@salesforce/core';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('spx-connected-app', 'create');
@@ -93,7 +93,9 @@ export default class ConnectedAppCreate extends SfCommand<CreateResult> {
       }
     };
 
-    const authInfo = await AuthInfo.create({ username: flags.username });
+
+    const org: Org = await Org.create({ aliasOrUsername: flags.username });
+    const authInfo = await AuthInfo.create({ username: org.getUsername() });
     const connection = await Connection.create({ authInfo });
     this.log(`Connected to ${flags.username} (${authInfo.getFields().orgId}) with API version ${connection.version}`);
     this.log(`Connected App create ${JSON.stringify(metadata)}`);
