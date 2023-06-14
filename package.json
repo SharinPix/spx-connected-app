@@ -1,5 +1,5 @@
 {
-  "name": "spx-connected-app",
+  "name": "@sharinpix/spx-connected-app",
   "description": "Allow creating connected app from CLI on Salesforce.",
   "version": "0.0.1",
   "dependencies": {
@@ -192,5 +192,10 @@
       "output": []
     }
   },
-  "author": "Kevan Moothien"
+  "author": "Kevan Moothien",
+  "types": "./lib/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  }
 }
