@@ -28,17 +28,17 @@ export default class ConnectedAppList extends SfCommand<ConnectedAppResult> {
     // parse the provided flags
     const { flags } = await this.parse(ConnectedAppList);
 
-    this.log(`Connecting to ${flags.username}...`);
+    // this.log(`Connecting to ${flags.username}...`);
 
     // Initialize the authorization for the provided username
     const authInfo = await AuthInfo.create({ username: flags.username });
 
     // Create a connection to the org
     const connection = await Connection.create({ authInfo });
-    this.log(`Connected to ${flags.username} (${authInfo.getFields().orgId}) with API version ${connection.version}`);
+    // this.log(`Connected to ${flags.username} (${authInfo.getFields().orgId}) with API version ${connection.version}`);
 
     const metadatas = (await connection.metadata.read('ConnectedApp', flags.name)) as ConnectedAppResult;
-    this.log(JSON.stringify(metadatas));
+    // this.log(JSON.stringify(metadatas));
 
     // Use the connection to execute a SOQL query against the org
     return metadatas;
