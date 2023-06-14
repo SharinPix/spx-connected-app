@@ -2,7 +2,7 @@ import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages, AuthInfo, Connection, Org } from '@salesforce/core';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('spx-connected-app', 'create');
+const messages = Messages.loadMessages('spx-connected-app', 'connected.create');
 
 export type CreateResult = {
   path: string;
