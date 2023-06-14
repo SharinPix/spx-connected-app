@@ -94,7 +94,7 @@ export default class ConnectedAppCreate extends SfCommand<CreateResult> {
     };
 
 
-    const org: Org = await Org.create({ aliasOrUsername: flags.username });
+    const org: Org = await Org.create({ aliasOrUsername: username });
     const authInfo = await AuthInfo.create({ username: org.getUsername() });
     const connection = await Connection.create({ authInfo });
     this.log(`Connected to ${flags.username} (${authInfo.getFields().orgId}) with API version ${connection.version}`);
