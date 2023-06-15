@@ -1,7 +1,7 @@
 {
   "name": "@sharinpix/spx-connected-app",
   "description": "Allow creating connected app from CLI on Salesforce.",
-  "version": "0.0.1",
+  "version": "0.0.3-beta",
   "dependencies": {
     "@oclif/core": "^2.8.2",
     "@salesforce/core": "^3.34.8",
