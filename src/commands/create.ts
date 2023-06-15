@@ -97,19 +97,22 @@ export default class ConnectedAppCreate extends SfCommand<CreateResult> {
     const consumerSecret = flags.consumersecret;
     const namespace = flags.namespace;
 
-    let metadata: object = {
+    let metadata: Record<string, unknown> = {
       contactEmail,
       description,
       fullName,
       label,
       oauthConfig: { callbackUrl, consumerSecret, scopes },
-      canvasConfig: {
+    };
+
+    if (canvasUrl) {
+      metadata.canvasConfig = {
         canvasUrl,
         accessMethod,
         locations: locations?.split(','),
         options: options?.split(',')
       }
-    };
+    }
 
     metadata = getValuable(metadata);
 
