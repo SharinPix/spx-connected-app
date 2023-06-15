@@ -1,5 +1,6 @@
 import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages, AuthInfo, Connection, Org } from '@salesforce/core';
+// import { result } from 'lodash';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@sharinpix/spx-connected-app', 'connected.create');
@@ -76,6 +77,7 @@ export default class ConnectedAppCreate extends SfCommand<CreateResult> {
     const locations = flags.locations as string;
     const options = flags.options as string;
     const consumerSecret = flags.consumersecret;
+    const namespace = flags.namespace;
 
     const metadata = {
       contactEmail,
@@ -94,10 +96,16 @@ export default class ConnectedAppCreate extends SfCommand<CreateResult> {
     const org: Org = await Org.create({ aliasOrUsername: username });
     const authInfo = await AuthInfo.create({ username: org.getUsername() });
     const connection = await Connection.create({ authInfo });
-    // this.log(`Connected to ${flags.username} (${authInfo.getFields().orgId}) with API version ${connection.version}`);
-    // this.log(`Connected App create ${JSON.stringify(metadata)}`);
     const results = await connection.metadata.create('ConnectedApp', metadata);
-    // this.log(`Connected App create ${JSON.stringify(results)}`);
+
+    if (results.success) {
+      let connectedAppName = results.fullName
+      if (namespace) {
+        connectedAppName = `${namespace}__${connectedAppName}`;
+      }
+      return (await connection.metadata.read('ConnectedApp', connectedAppName)) as unknown as CreateResult;
+    }
+    
     return results;
   }
 }
