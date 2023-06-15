@@ -4,9 +4,7 @@ import { Messages, AuthInfo, Connection, Org } from '@salesforce/core';
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@sharinpix/spx-connected-app', 'connected.create');
 
-export type CreateResult = {
-  path: string;
-};
+export type CreateResult = { fullName: string; success: boolean }
 
 export default class ConnectedAppCreate extends SfCommand<CreateResult> {
   public static readonly summary = messages.getMessage('summary');
@@ -93,14 +91,13 @@ export default class ConnectedAppCreate extends SfCommand<CreateResult> {
       }
     };
 
-
     const org: Org = await Org.create({ aliasOrUsername: username });
     const authInfo = await AuthInfo.create({ username: org.getUsername() });
     const connection = await Connection.create({ authInfo });
-    this.log(`Connected to ${flags.username} (${authInfo.getFields().orgId}) with API version ${connection.version}`);
-    this.log(`Connected App create ${JSON.stringify(metadata)}`);
+    // this.log(`Connected to ${flags.username} (${authInfo.getFields().orgId}) with API version ${connection.version}`);
+    // this.log(`Connected App create ${JSON.stringify(metadata)}`);
     const results = await connection.metadata.create('ConnectedApp', metadata);
-    this.log(`Connected App create ${JSON.stringify(results)}`);
-    return { path: 'live' };
+    // this.log(`Connected App create ${JSON.stringify(results)}`);
+    return results;
   }
 }
