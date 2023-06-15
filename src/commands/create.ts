@@ -79,7 +79,7 @@ export default class ConnectedAppCreate extends SfCommand<CreateResult> {
     const consumerSecret = flags.consumersecret;
     const namespace = flags.namespace;
 
-    const metadata = {
+    let metadata = {
       contactEmail,
       description,
       fullName,
@@ -92,6 +92,8 @@ export default class ConnectedAppCreate extends SfCommand<CreateResult> {
         options: options?.split(',')
       }
     };
+
+    metadata = this.removeEmpty(metadata);
 
     const org: Org = await Org.create({ aliasOrUsername: username });
     const authInfo = await AuthInfo.create({ username: org.getUsername() });
@@ -107,5 +109,14 @@ export default class ConnectedAppCreate extends SfCommand<CreateResult> {
     }
     
     return results;
+  }
+
+  public removeEmpty(obj: any): any {
+    return Object.entries(obj)
+      .filter(([_, v]) => v != null)
+      .reduce(
+        (acc, [k, v]) => ({ ...acc, [k]: v === Object(v) ? this.removeEmpty(v) : v }),
+        {}
+      );
   }
 }
