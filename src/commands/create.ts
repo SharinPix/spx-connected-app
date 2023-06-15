@@ -74,8 +74,8 @@ export default class ConnectedAppCreate extends SfCommand<CreateResult> {
     
     const canvasUrl = flags['canvas-url'] as string;
     const accessMethod = flags.accessmethod;
-    const locations = flags.locations as string;
-    const options = flags.options as string;
+    const locations: string | undefined = flags.locations;
+    const options: string | undefined = flags.options;
     const consumerSecret = flags.consumersecret;
     const namespace = flags.namespace;
 
@@ -88,8 +88,8 @@ export default class ConnectedAppCreate extends SfCommand<CreateResult> {
       canvasConfig: {
         canvasUrl,
         accessMethod,
-        locations: locations.split(','),
-        options: options.split(',')
+        locations: locations?.split(','),
+        options: options?.split(',')
       }
     };
 
