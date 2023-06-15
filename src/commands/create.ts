@@ -1,11 +1,29 @@
 import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages, AuthInfo, Connection, Org } from '@salesforce/core';
-// import { result } from 'lodash';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@sharinpix/spx-connected-app', 'connected.create');
 
 export type CreateResult = { fullName: string; success: boolean }
+
+export type Valuable<T> = { [K in keyof T as T[K] extends null | undefined ? never : K]: T[K] };
+
+function getValuable<
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    T extends {},
+    V = Valuable<T>,
+  >(obj: T): V {
+    return Object.fromEntries(
+      Object.entries(obj).filter(
+        ([, v]) =>
+          !(
+            (typeof v === 'string' && !v.length) ||
+            v === null ||
+            typeof v === 'undefined'
+          ),
+      ),
+    ) as V;
+  }
 
 export default class ConnectedAppCreate extends SfCommand<CreateResult> {
   public static readonly summary = messages.getMessage('summary');
@@ -79,7 +97,7 @@ export default class ConnectedAppCreate extends SfCommand<CreateResult> {
     const consumerSecret = flags.consumersecret;
     const namespace = flags.namespace;
 
-    let metadata = {
+    let metadata: object = {
       contactEmail,
       description,
       fullName,
@@ -93,7 +111,7 @@ export default class ConnectedAppCreate extends SfCommand<CreateResult> {
       }
     };
 
-    metadata = this.removeEmpty(metadata);
+    metadata = getValuable(metadata);
 
     const org: Org = await Org.create({ aliasOrUsername: username });
     const authInfo = await AuthInfo.create({ username: org.getUsername() });
@@ -109,14 +127,5 @@ export default class ConnectedAppCreate extends SfCommand<CreateResult> {
     }
     
     return results;
-  }
-
-  public removeEmpty(obj: any): any {
-    return Object.entries(obj)
-      .filter(([_, v]) => v != null)
-      .reduce(
-        (acc, [k, v]) => ({ ...acc, [k]: v === Object(v) ? this.removeEmpty(v) : v }),
-        {}
-      );
   }
 }
