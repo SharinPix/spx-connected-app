@@ -3,7 +3,7 @@
   "description": "Allow creating connected app from CLI on Salesforce.",
   "version": "0.0.7-beta",
   "dependencies": {
-    "@oclif/core": "^2.8.2",
+    "@oclif/core": "^2.9.4",
     "@salesforce/core": "^3.34.8",
     "@salesforce/kit": "^3.0.1",
     "@salesforce/sf-plugins-core": "^2.4.3",
